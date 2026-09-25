@@ -144,7 +144,7 @@ const Home = () => {
       )}
 
       {/* Agentic Command Console */}
-      <div className="agentic-console mb-4">
+      <div className="agentic-console mb-4" id="kitchens-console">
         {/* City Switcher Tabs */}
         <div className="agentic-city-tabs">
           <div className="agentic-city-tabs-scroll">

@@ -67,8 +67,8 @@ const Header = () => {
         <Link to="/" className="d-inline-flex align-items-center text-decoration-none agentic-brand">
           <img src="/images/logo.webp" alt="Food Order Logo" className="logo mr-2" />
           <div className="agentic-brand-text text-left">
-            <span className="brand-name">NEO<span className="brand-accent">CULINARY</span></span>
-            <span className="brand-tagline">ICONIC DINING INTELLIGENCE</span>
+            <span className="brand-name">Food <span className="brand-accent">Order</span></span>
+            <span className="brand-tagline">ORIGINAL DINING NETWORK</span>
           </div>
         </Link>
       </div>

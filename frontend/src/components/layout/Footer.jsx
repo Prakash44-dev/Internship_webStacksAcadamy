@@ -10,7 +10,7 @@ const Footer = () => {
             <Link to="/" className="d-inline-flex align-items-center text-decoration-none">
               <img src="/images/logo.webp" alt="Food Order Logo" className="logo mr-2" style={{ width: "36px", height: "36px" }} />
               <span className="brand-name" style={{ fontSize: "1.2rem" }}>
-                NEO<span className="brand-accent">CULINARY</span>
+                Food <span className="brand-accent">Order</span>
               </span>
             </Link>
             <p className="mt-2 text-muted" style={{ fontSize: "0.82rem", maxWidth: "280px" }}>
@@ -44,7 +44,7 @@ const Footer = () => {
         </div>
 
         <div className="text-center text-muted" style={{ fontSize: "0.8rem" }}>
-          © {new Date().getFullYear()} NEOCULINARY. Built with AI Taste Intelligence & Agentic Engineering.
+          © {new Date().getFullYear()} Food Order. Built with AI Taste Intelligence & Motional Engineering.
         </div>
       </div>
     </footer>

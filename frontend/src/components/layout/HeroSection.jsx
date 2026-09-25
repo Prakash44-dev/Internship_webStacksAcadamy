@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSelectedCity } from "../../redux/slices/restaurantSlice";
+import CulinarySanctumWorld from "./CulinarySanctumWorld";
 
 const HeroSection = () => {
   const dispatch = useDispatch();
@@ -19,13 +20,15 @@ const HeroSection = () => {
     { label: "Ice Cream", query: "Chocolate" },
   ];
 
-  const handleCitySelect = (city) => {
-    localStorage.setItem("cityOverridden", "true");
-    dispatch(setSelectedCity(city));
-  };
-
   const handleQuickSearch = (keyword) => {
     navigate(`/eats/stores/search/${encodeURIComponent(keyword)}`);
+  };
+
+  const scrollToKitchens = () => {
+    const el = document.getElementById("kitchens-console");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
@@ -38,7 +41,7 @@ const HeroSection = () => {
         <div className="agentic-badge-wrapper mb-3">
           <div className="agentic-live-badge">
             <span className="agentic-live-dot" />
-            <span className="agentic-live-text">NEOCULINARY NETWORK ACTIVE</span>
+            <span className="agentic-live-text">FOOD ORDER NETWORK ACTIVE</span>
             <span className="agentic-badge-divider">/</span>
             <span className="agentic-badge-city">
               {selectedCity === "All" ? "ALL 6 METROS" : selectedCity.toUpperCase()}
@@ -51,19 +54,23 @@ const HeroSection = () => {
           Taste The Legends.
           <br />
           <span className="agentic-gradient-text">
-            Powered By Culinary Intelligence.
+            Step Into The Culinary Sanctum.
           </span>
         </h1>
 
         {/* Hero Subtitle */}
         <p className="agentic-hero-subtitle mx-auto">
-          From Bangalore’s buttery Vidyarthi Bhavan to Old Delhi’s royal Karim’s.
-          Discover 27 legendary culinary institutions with real-time taste radar,
-          curated menus, and instant delivery.
+          An architectural journey through India's most celebrated heritage kitchens.
+          Step through the sacred spice vaults and live flame hearths to taste 27 legendary icons.
         </p>
 
+        {/* Kage-Inspired 3D Three.js Architectural Experience */}
+        <div className="my-4">
+          <CulinarySanctumWorld onExploreKitchens={scrollToKitchens} />
+        </div>
+
         {/* Quick Suggestion Pills */}
-        <div className="agentic-quick-pills mt-3 d-flex flex-wrap justify-content-center align-items-center">
+        <div className="agentic-quick-pills mt-4 d-flex flex-wrap justify-content-center align-items-center">
           <span className="agentic-quick-label mr-2">Trending Cravings:</span>
           {quickDishes.map((dish) => (
             <button
