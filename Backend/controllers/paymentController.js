@@ -12,11 +12,30 @@ const getStripe = () => {
 };
 
 exports.processPayment = catchAsyncErrors(async (req, res, next) => {
-  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+  // Dynamically resolve frontend host so Stripe redirects to the exact live origin
+  const origin = req.get("origin") || req.get("referer");
+  let frontendUrl = process.env.FRONTEND_URL || "https://food-order-frontend-woad.vercel.app";
+
+  if (origin) {
+    try {
+      const urlObj = new URL(origin);
+      frontendUrl = `${urlObj.protocol}//${urlObj.host}`;
+    } catch (e) {
+      // Keep default
+    }
+  }
+
   const stripe = getStripe();
+
+  const userId = req.user?._id ? req.user._id.toString() : (req.user?.id || "");
+  const restaurantId = req.body.restaurantId || (req.body.items?.[0]?.foodItem?.restaurant ? req.body.items[0].foodItem.restaurant.toString() : "");
 
   const session = await stripe.checkout.sessions.create({
     customer_email: req.user.email,
+    metadata: {
+      userId,
+      restaurantId,
+    },
     phone_number_collection: {
       enabled: true,
     },
@@ -44,7 +63,7 @@ exports.processPayment = catchAsyncErrors(async (req, res, next) => {
           display_name: "Delivery Charges",
           type: "fixed_amount",
           fixed_amount: {
-            amount: 5500, // Amount in paise (e.g., 5500 = 55 INR)
+            amount: 5500, // Amount in paise (55 INR)
             currency: "inr",
           },
           delivery_estimate: {

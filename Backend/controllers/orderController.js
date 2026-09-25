@@ -30,26 +30,52 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
 
   const stripe = getStripe();
   const session = await stripe.checkout.sessions.retrieve(session_id, {
-    expand: ["customer"],
+    expand: ["customer", "line_items"],
   });
-  const cart = await Cart.findOne({ user: req.user._id })
-    .populate({
-      path: "items.foodItem",
-      select: "name price images",
-    })
-    .populate({
-      path: "restaurant",
-      select: "name",
-    });
 
-  if (!cart || !cart.items.length) {
-    return next(new ErrorHandler("Cart is empty. Cannot create order.", 400));
+  // 1. Idempotency Check: if order was already recorded for this checkout session or payment intent
+  const existingOrder = await Order.findOne({
+    $or: [
+      { "paymentInfo.id": session.payment_intent },
+      { "paymentInfo.sessionId": session_id },
+    ],
+  }).populate("restaurant");
+
+  if (existingOrder) {
+    return res.status(200).json({
+      success: true,
+      order: existingOrder,
+    });
   }
+
+  // 2. Resilient User Identification
+  const User = require("../models/user");
+  let userId = req.user?._id || req.user?.id;
+  if (!userId && session.metadata?.userId) {
+    userId = session.metadata.userId;
+  }
+  if (!userId && session.customer_email) {
+    const userDoc = await User.findOne({ email: session.customer_email.toLowerCase() });
+    if (userDoc) userId = userDoc._id;
+  }
+
+  // 3. Retrieve Cart or construct from Stripe Line Items
+  const cart = userId
+    ? await Cart.findOne({ user: userId })
+        .populate({
+          path: "items.foodItem",
+          select: "name price images restaurant",
+        })
+        .populate({
+          path: "restaurant",
+          select: "name",
+        })
+    : null;
 
   const stripeAddress = getCheckoutAddress(session) || {};
   const phoneNo =
     session?.customer_details?.phone ||
-    req.user.phoneNumber ||
+    req.user?.phoneNumber ||
     "9999999999";
 
   let deliveryInfo = {
@@ -61,16 +87,37 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     postalCode: stripeAddress.postal_code || "560001",
     country: stripeAddress.country || "IN",
   };
-  let orderItems = cart.items.map((item) => ({
-    name: item.foodItem.name,
-    quantity: item.quantity,
-    image: item.foodItem?.images?.[0]?.url || "/images/template.jpeg",
-    price: item.foodItem.price,
-    fooditem: item.foodItem._id,
-  }));
+
+  let orderItems = [];
+  let restaurantId = null;
+
+  if (cart && cart.items && cart.items.length) {
+    orderItems = cart.items.map((item) => ({
+      name: item.foodItem?.name || "Food Item",
+      quantity: item.quantity,
+      image: item.foodItem?.images?.[0]?.url || "/images/template.jpeg",
+      price: item.foodItem?.price || 0,
+      fooditem: item.foodItem?._id,
+    }));
+    restaurantId = cart.restaurant?._id || cart.restaurant;
+  } else if (session.line_items?.data?.length) {
+    // Reconstruct items from verified Stripe checkout session
+    orderItems = session.line_items.data.map((li) => ({
+      name: li.description || "Food Item",
+      quantity: li.quantity,
+      image: "/images/template.jpeg",
+      price: (li.price?.unit_amount || 0) / 100,
+    }));
+    restaurantId = session.metadata?.restaurantId || null;
+  }
+
+  if (!orderItems.length) {
+    return next(new ErrorHandler("No order items found. Cannot finalize order.", 400));
+  }
 
   let paymentInfo = {
     id: session.payment_intent,
+    sessionId: session_id,
     status: session.payment_status,
   };
 
@@ -81,12 +128,14 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     deliveryCharge: +(session.shipping_cost?.amount_subtotal || 0) / 100,
     itemsPrice: +session.amount_subtotal / 100,
     finalTotal: +session.amount_total / 100,
-    user: req.user.id,
-    restaurant: cart.restaurant._id,
+    user: userId || req.user?.id,
+    restaurant: restaurantId,
     paidAt: Date.now(),
   });
 
-  await Cart.findOneAndDelete({ user: req.user._id });
+  if (userId) {
+    await Cart.findOneAndDelete({ user: userId });
+  }
 
   res.status(200).json({
     success: true,
