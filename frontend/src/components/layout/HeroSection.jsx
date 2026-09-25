@@ -37,29 +37,6 @@ const HeroSection = () => {
       <div className="kage-ambient-glow glow-top-right" />
 
       <div className="kage-hero-container">
-        {/* Floating Peek Card (Mughal Sanmon Architecture Peek) */}
-        <div 
-          className="kage-peek-card"
-          onClick={() => scrollToSection("kitchens-console")}
-          title="Jump to Living Kitchens"
-        >
-          <div className="kage-peek-media">
-            <img 
-              src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=600&auto=format&fit=crop&q=80" 
-              alt="Culinary Sanctum preview" 
-              className="kage-peek-img"
-            />
-            <div className="kage-peek-badge">
-              <span>EXPLORE</span>
-              <span className="peek-arrow">↗</span>
-            </div>
-          </div>
-          <div className="kage-peek-caption">
-            <b>IMPERIAL FEAST</b>
-            <i>27 LIVING KITCHENS</i>
-          </div>
-        </div>
-
         {/* Top Eyebrow Badge */}
         <div className="kage-eyebrow-row">
           <span className="kage-live-dot" />

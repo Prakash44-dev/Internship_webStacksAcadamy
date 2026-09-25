@@ -28,21 +28,27 @@ exports.signup = catchAsyncErrors(async (req, res, next) => {
 
   } else {
 
-    try {
-      const result = await cloudinary.uploader.upload(req.body.avatar, {
-      folder: "avatars",
-      width: 150,
-      crop: "scale",
-    });
-
-    avatar = {
-      public_id: result.public_id,
-      url: result.secure_url,
-    };
-    } catch (err) {
+    let uploaded = false;
+    if (process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_CLOUD_NAME) {
+      try {
+        const result = await cloudinary.uploader.upload(req.body.avatar, {
+          folder: "avatars",
+          width: 250,
+          crop: "scale",
+        });
+        avatar = {
+          public_id: result.public_id,
+          url: result.secure_url,
+        };
+        uploaded = true;
+      } catch (err) {
+        console.error("Cloudinary signup upload error:", err.message);
+      }
+    }
+    if (!uploaded) {
       avatar = {
-        public_id: "default",
-        url: "/images/images.png",
+        public_id: "avatar_" + Date.now(),
+        url: req.body.avatar,
       };
     }
   }
@@ -206,29 +212,39 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
       }
     }
 
-    try {
-      const result = await cloudinary.uploader.upload(req.body.avatar, {
-      folder: "avatars",
-      width: 150,
-      crop: "scale",
-    });
-
-    newUserData.avatar = {
-      public_id: result.public_id,
-      url: result.secure_url,
-    };
-    } catch (err) {
-      console.error("Cloudinary upload error:", err.message);
+    let uploaded = false;
+    if (process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_CLOUD_NAME) {
+      try {
+        const result = await cloudinary.uploader.upload(req.body.avatar, {
+          folder: "avatars",
+          width: 250,
+          crop: "scale",
+        });
+        newUserData.avatar = {
+          public_id: result.public_id,
+          url: result.secure_url,
+        };
+        uploaded = true;
+      } catch (err) {
+        console.error("Cloudinary update upload error:", err.message);
+      }
+    }
+    if (!uploaded) {
+      newUserData.avatar = {
+        public_id: "avatar_" + Date.now(),
+        url: req.body.avatar,
+      };
     }
   }
 
-  await User.findByIdAndUpdate(req.user.id, newUserData, {
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
     runValidators: true,
   });
 
   res.status(200).json({
     success: true,
+    user: updatedUser,
   });
 
 });

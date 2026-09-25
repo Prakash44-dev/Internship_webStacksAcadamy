@@ -13,8 +13,8 @@ const KageCulinaryCanvas = () => {
 
     // 1. Scene & Perspective Camera
     const scene = new THREE.Scene();
-    // Rich deep atmospheric fog - cosmic obsidian with warm ember undertones
-    scene.fog = new THREE.FogExp2(0x06080d, 0.015);
+    // Rich deep atmospheric fog - cosmic obsidian with warm luxury ember undertones
+    scene.fog = new THREE.FogExp2(0x07090e, 0.014);
 
     const camera = new THREE.PerspectiveCamera(52, width / height, 0.1, 300);
     camera.position.set(0, 2.2, 30);
@@ -28,43 +28,43 @@ const KageCulinaryCanvas = () => {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.3;
     container.appendChild(renderer.domElement);
 
-    // 3. Dynamic Lighting System
-    const ambientLight = new THREE.AmbientLight(0xffecd1, 0.35);
+    // 3. Dynamic Lighting System - Calibrated to Luxury Palette
+    const ambientLight = new THREE.AmbientLight(0xfff2db, 0.45);
     scene.add(ambientLight);
 
-    // Torch light following camera
-    const heroTorch = new THREE.PointLight(0xff6b35, 4.0, 42, 1.4);
+    // Hero Torch light following camera (#F62440 Flame)
+    const heroTorch = new THREE.PointLight(0xf62440, 4.2, 45, 1.4);
     heroTorch.position.set(0, 4, camera.position.z - 2);
     scene.add(heroTorch);
 
-    // Deep cyan-violet moonlight accent
-    const moonAccent = new THREE.DirectionalLight(0x7dd3fc, 0.45);
+    // Champagne (#FFE5BF) backlight accent
+    const moonAccent = new THREE.DirectionalLight(0xffe5bf, 0.55);
     moonAccent.position.set(-15, 30, -50);
     scene.add(moonAccent);
 
-    // Sacred Hearth deep ruby-amber light in the distance
-    const hearthCoreLight = new THREE.PointLight(0xff3b14, 5.0, 70, 1.6);
+    // Sacred Hearth deep crimson-flame light in the distance (#F62440)
+    const hearthCoreLight = new THREE.PointLight(0xf62440, 5.5, 75, 1.6);
     hearthCoreLight.position.set(0, 6, -95);
     scene.add(hearthCoreLight);
 
-    // 4. The Celestial Saffron Moon in the Distance (Kage's Vermilion Moon)
+    // 4. The Celestial Vermilion Moon in the Distance (#F62440)
     const moonGeo = new THREE.SphereGeometry(7.5, 32, 32);
     const moonMat = new THREE.MeshBasicMaterial({
-      color: 0xff5a20,
+      color: 0xf62440,
     });
     const moon = new THREE.Mesh(moonGeo, moonMat);
     moon.position.set(16, 26, -150);
     scene.add(moon);
 
-    // Moon Glow Corona Halo
-    const moonHaloGeo = new THREE.RingGeometry(7.6, 14.5, 32);
+    // Moon Glow Corona Halo (#FFE5BF Champagne Apricot)
+    const moonHaloGeo = new THREE.RingGeometry(7.6, 14.8, 32);
     const moonHaloMat = new THREE.MeshBasicMaterial({
-      color: 0xff8c38,
+      color: 0xffe5bf,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0.22,
       side: THREE.DoubleSide,
     });
     const moonHalo = new THREE.Mesh(moonHaloGeo, moonHaloMat);
@@ -90,23 +90,23 @@ const KageCulinaryCanvas = () => {
       emissive: 0x221308,
     });
 
-    // Golden Curved Spanning Arches
+    // Golden Curved Spanning Arches (#FFE5BF Champagne Silk with #F62440 Emissive)
     const archRadius = 7.2;
     const archGeo = new THREE.TorusGeometry(archRadius, 0.16, 12, 32, Math.PI);
     const archMat = new THREE.MeshStandardMaterial({
-      color: 0xff9f43,
-      emissive: 0xff6b35,
-      emissiveIntensity: 0.5,
+      color: 0xffe5bf,
+      emissive: 0xf62440,
+      emissiveIntensity: 0.35,
       metalness: 0.85,
       roughness: 0.18,
     });
 
-    // Grand Entrance Arch (The Torii) at z = 16
+    // Grand Entrance Arch (The Torii) at z = 16 (#F62440 Crimson Flame)
     const entranceArchRadius = 8.5;
     const entranceArchGeo = new THREE.TorusGeometry(entranceArchRadius, 0.28, 16, 40, Math.PI);
     const entranceArchMat = new THREE.MeshStandardMaterial({
-      color: 0xff4d29,
-      emissive: 0xff3b14,
+      color: 0xf62440,
+      emissive: 0xf62440,
       emissiveIntensity: 0.75,
       metalness: 0.9,
       roughness: 0.12,
@@ -118,10 +118,10 @@ const KageCulinaryCanvas = () => {
     // Horizontal Torii Beam
     const beamGeo = new THREE.BoxGeometry(entranceArchRadius * 2 + 3, 0.45, 0.6);
     const beamMat = new THREE.MeshStandardMaterial({
-      color: 0x182033,
+      color: 0x141824,
       metalness: 0.9,
       roughness: 0.15,
-      emissive: 0x3d170b,
+      emissive: 0x2e080d,
     });
     const entranceBeam = new THREE.Mesh(beamGeo, beamMat);
     entranceBeam.position.set(0, 9.4, 16);
@@ -157,10 +157,10 @@ const KageCulinaryCanvas = () => {
       arch.position.set(0, 9.1, zPos);
       colonnadeGroup.add(arch);
 
-      // Hanging Brass Spice Lanterns
+      // Hanging Brass Spice Lanterns (#F62440 and #FFE5BF)
       const lanternGeo = new THREE.OctahedronGeometry(0.32, 0);
       const lanternMat = new THREE.MeshBasicMaterial({
-        color: i % 3 === 0 ? 0xff4d29 : i % 3 === 1 ? 0xffb703 : 0xfb8500,
+        color: i % 2 === 0 ? 0xf62440 : 0xffe5bf,
       });
 
       const lanternLeft = new THREE.Mesh(lanternGeo, lanternMat);
@@ -171,9 +171,9 @@ const KageCulinaryCanvas = () => {
       lanternRight.position.set(archRadius - 1.1, 6.2, zPos);
       colonnadeGroup.add(lanternRight);
 
-      // Point light per 2 arches for rich warmth
+      // Warm point light per 2 arches (#FFE5BF Champagne warmth)
       if (i % 2 === 0) {
-        const lanternLight = new THREE.PointLight(0xffa500, 1.4, 18, 1.8);
+        const lanternLight = new THREE.PointLight(0xffe5bf, 1.3, 18, 1.8);
         lanternLight.position.set(0, 6.8, zPos);
         colonnadeGroup.add(lanternLight);
       }
@@ -193,7 +193,7 @@ const KageCulinaryCanvas = () => {
     scene.add(floor);
 
     // Perspective floor lines (Kage / Cyber grid)
-    const gridHelper = new THREE.GridHelper(160, 60, 0xff6b35, 0x182035);
+    const gridHelper = new THREE.GridHelper(160, 60, 0xf62440, 0x182035);
     gridHelper.position.set(0, 0.03, -60);
     scene.add(gridHelper);
 
@@ -206,12 +206,11 @@ const KageCulinaryCanvas = () => {
     const pDrifts = new Float32Array(particleCount);
 
     const emberColors = [
-      new THREE.Color(0xff4d29), // Vermilion Red
-      new THREE.Color(0xff7a18), // Saffron Flame
-      new THREE.Color(0xf59e0b), // Amber Gold
-      new THREE.Color(0xffd166), // Star Anise Spark
-      new THREE.Color(0xec4899), // Rose Cardamom
-      new THREE.Color(0x10b981), // Fresh Curry Leaf
+      new THREE.Color(0xf62440), // Vermilion Crimson Flame
+      new THREE.Color(0xffe5bf), // Golden Champagne Silk
+      new THREE.Color(0xfff2db), // Warm Almond Cream
+      new THREE.Color(0xfffaf3), // Pure Pearl Ivory Spark
+      new THREE.Color(0xf62440), // Second Crimson Spark
     ];
 
     for (let i = 0; i < particleCount; i++) {

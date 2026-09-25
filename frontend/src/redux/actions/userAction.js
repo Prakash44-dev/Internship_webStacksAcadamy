@@ -84,6 +84,11 @@ export const updateProfile = (userData) => async (dispatch) => {
     dispatch(updateRequest());
     const { data } = await api.put("/users/me/update", userData);
     dispatch(updateSuccess(data.success));
+    if (data.user) {
+      dispatch(loginSuccess(data.user));
+    } else {
+      dispatch(loadUser());
+    }
   } catch (error) {
     dispatch(updateFail(getErrorMessage(error, "Failed to update profile")));
   }

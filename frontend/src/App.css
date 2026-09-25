@@ -1,3 +1,13 @@
+:root {
+  --kage-crimson: #F62440;
+  --kage-champagne: #FFE5BF;
+  --kage-cream: #FFF2DB;
+  --kage-ivory: #FFFAF3;
+  --kage-glass-card: rgba(12, 14, 24, 0.32);
+  --kage-glass-border: rgba(255, 229, 191, 0.16);
+  --kage-glass-glow: rgba(246, 36, 64, 0.35);
+}
+
 html,
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -3401,3 +3411,477 @@ ul.CTAs a {
 }
 
 
+
+
+/* ========================================================
+   ULTRA-LUXURY GLASSMORPHISM & USER COLOR PALETTE
+   Palette: #F62440 (Crimson), #FFE5BF (Champagne),
+            #FFF2DB (Almond Cream), #FFFAF3 (Pearl Ivory)
+   ======================================================== */
+
+/* 1. Global Reset & Body Atmosphere */
+html,
+body {
+  color: #FFF2DB !important;
+  background-color: #07090e !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #FFFAF3;
+}
+
+/* 2. Glassy Navigation */
+nav,
+.agentic-navbar {
+  background: rgba(7, 9, 14, 0.42) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 229, 191, 0.14) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45) !important;
+}
+
+.brand-name {
+  color: #FFFAF3 !important;
+}
+
+.brand-accent {
+  background: linear-gradient(135deg, #FFFAF3 0%, #FFE5BF 45%, #F62440 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.brand-tagline {
+  color: #FFE5BF !important;
+  opacity: 0.85;
+}
+
+/* 3. Search & Location Bar */
+#search_field {
+  background: rgba(12, 14, 24, 0.38) !important;
+  border: 1px solid rgba(255, 229, 191, 0.18) !important;
+  color: #FFFAF3 !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+#search_field::placeholder {
+  color: rgba(255, 242, 219, 0.5) !important;
+}
+
+#search_field:focus {
+  background: rgba(16, 20, 32, 0.6) !important;
+  border-color: #F62440 !important;
+  box-shadow: 0 0 24px rgba(246, 36, 64, 0.3) !important;
+  color: #FFFAF3 !important;
+}
+
+.header-location-select {
+  background: rgba(12, 14, 24, 0.4) !important;
+  border: 1px solid rgba(255, 229, 191, 0.18) !important;
+  color: #FFE5BF !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+.header-location-select:hover,
+.header-location-select:focus {
+  border-color: #F62440 !important;
+  background: rgba(20, 24, 38, 0.6) !important;
+  box-shadow: 0 0 20px rgba(246, 36, 64, 0.25) !important;
+}
+
+/* 4. Luxury Buttons & Badges */
+#login_btn,
+.btn-primary,
+.agentic-order-btn,
+#checkout_btn,
+#pay_btn {
+  background: linear-gradient(135deg, #F62440 0%, #d81630 100%) !important;
+  border: 1px solid rgba(255, 229, 191, 0.25) !important;
+  color: #FFFAF3 !important;
+  box-shadow: 0 4px 18px rgba(246, 36, 64, 0.4) !important;
+  font-weight: 700 !important;
+  transition: all 0.25s ease !important;
+}
+
+#login_btn:hover,
+.btn-primary:hover,
+.agentic-order-btn:hover,
+#checkout_btn:hover,
+#pay_btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 26px rgba(246, 36, 64, 0.6) !important;
+  color: #FFFAF3 !important;
+}
+
+.cart-badge {
+  background: #F62440 !important;
+  color: #FFFAF3 !important;
+  box-shadow: 0 0 12px rgba(246, 36, 64, 0.6) !important;
+}
+
+.agentic-cart-pill {
+  background: rgba(255, 229, 191, 0.08) !important;
+  border: 1px solid rgba(255, 229, 191, 0.18) !important;
+  color: #FFFAF3 !important;
+}
+
+.agentic-cart-pill:hover {
+  background: rgba(246, 36, 64, 0.18) !important;
+  border-color: #F62440 !important;
+  box-shadow: 0 6px 18px rgba(246, 36, 64, 0.3) !important;
+}
+
+/* 5. Translucent Glass Editorial Sections */
+.kage-editorial-sec {
+  background: rgba(10, 12, 20, 0.26) !important;
+  border: 1px solid rgba(255, 229, 191, 0.14) !important;
+  backdrop-filter: blur(20px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(170%) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 242, 219, 0.1) !important;
+}
+
+.kage-sec-num {
+  color: #F62440 !important;
+}
+
+.kage-sec-rule {
+  background: rgba(255, 229, 191, 0.12) !important;
+}
+
+.kage-sec-tag {
+  color: #FFE5BF !important;
+}
+
+.kage-title-accent {
+  background: linear-gradient(135deg, #FFFAF3 0%, #FFE5BF 45%, #F62440 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.kage-sec-body-lead {
+  color: #FFF2DB !important;
+}
+
+.kage-sec-body {
+  color: rgba(255, 242, 219, 0.75) !important;
+}
+
+.kage-editorial-link {
+  color: #FFE5BF !important;
+}
+
+.kage-editorial-link .link-circle {
+  border-color: rgba(255, 229, 191, 0.25) !important;
+}
+
+.kage-editorial-link:hover .link-circle {
+  background: #F62440 !important;
+  border-color: #F62440 !important;
+}
+
+/* 6. Translucent Glass Restaurant Cards */
+.agentic-card,
+.kage-glossy-card {
+  background: rgba(12, 14, 24, 0.28) !important;
+  border: 1px solid rgba(255, 229, 191, 0.15) !important;
+  border-radius: 22px !important;
+  backdrop-filter: blur(18px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(170%) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 242, 219, 0.12) !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.agentic-card:hover,
+.kage-glossy-card:hover {
+  transform: translateY(-8px) !important;
+  border-color: rgba(246, 36, 64, 0.55) !important;
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.65), 0 0 25px rgba(246, 36, 64, 0.24) !important;
+}
+
+.card-spotlight-layer {
+  background: radial-gradient(350px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(246, 36, 64, 0.22), transparent 75%) !important;
+}
+
+.agentic-card-title a {
+  color: #FFFAF3 !important;
+}
+
+.agentic-card-title a:hover {
+  color: #FFE5BF !important;
+}
+
+.agentic-card-address {
+  color: rgba(255, 242, 219, 0.72) !important;
+}
+
+.pin-symbol {
+  color: #F62440 !important;
+}
+
+.agentic-badge-city {
+  background: rgba(10, 12, 20, 0.45) !important;
+  border: 1px solid rgba(255, 229, 191, 0.2) !important;
+  color: #FFE5BF !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.agentic-badge-rating {
+  background: rgba(10, 12, 20, 0.45) !important;
+  border: 1px solid rgba(255, 229, 191, 0.35) !important;
+  color: #FFFAF3 !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.star-icon,
+.filter-star {
+  color: #FFE5BF !important;
+}
+
+.review-count {
+  color: rgba(255, 242, 219, 0.6) !important;
+}
+
+.agentic-ai-box {
+  background: rgba(14, 16, 28, 0.32) !important;
+  border: 1px solid rgba(255, 229, 191, 0.1) !important;
+}
+
+.ai-title {
+  color: #FFE5BF !important;
+}
+
+.agentic-ai-summary {
+  color: #FFF2DB !important;
+}
+
+.ai-tag {
+  background: rgba(255, 229, 191, 0.08) !important;
+  border: 1px solid rgba(255, 229, 191, 0.12) !important;
+  color: #FFE5BF !important;
+}
+
+/* 7. Translucent Glass Hearth & Spice Cards */
+.kage-hearth-card {
+  background: rgba(12, 14, 24, 0.30) !important;
+  border: 1px solid rgba(255, 229, 191, 0.14) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 242, 219, 0.1) !important;
+}
+
+.kage-hearth-card:hover {
+  border-color: rgba(246, 36, 64, 0.5) !important;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba(246, 36, 64, 0.2) !important;
+}
+
+.kage-hearth-tag {
+  background: rgba(10, 12, 20, 0.45) !important;
+  border: 1px solid rgba(255, 229, 191, 0.2) !important;
+  color: #FFE5BF !important;
+}
+
+.kage-hearth-body h4 {
+  color: #FFFAF3 !important;
+}
+
+.kage-hearth-body p {
+  color: rgba(255, 242, 219, 0.72) !important;
+}
+
+.kage-spice-card {
+  background: rgba(12, 14, 24, 0.28) !important;
+  border: 1px solid rgba(255, 229, 191, 0.14) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+.kage-spice-card:hover {
+  border-color: rgba(255, 229, 191, 0.4) !important;
+  background: rgba(18, 22, 36, 0.42) !important;
+}
+
+.kage-spice-card .spice-name {
+  color: #FFFAF3 !important;
+}
+
+.kage-spice-card .spice-region {
+  color: #FFE5BF !important;
+}
+
+.kage-spice-card .spice-note {
+  color: rgba(255, 242, 219, 0.72) !important;
+}
+
+/* 8. Translucent Console & Tabs */
+.agentic-console {
+  background: rgba(10, 12, 20, 0.28) !important;
+  border: 1px solid rgba(255, 229, 191, 0.16) !important;
+  backdrop-filter: blur(20px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(170%) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 242, 219, 0.1) !important;
+}
+
+.agentic-city-tab {
+  background: rgba(255, 229, 191, 0.05) !important;
+  border: 1px solid rgba(255, 229, 191, 0.14) !important;
+  color: #FFF2DB !important;
+}
+
+.agentic-city-tab:hover {
+  background: rgba(255, 229, 191, 0.12) !important;
+  color: #FFFAF3 !important;
+  border-color: rgba(255, 229, 191, 0.25) !important;
+}
+
+.agentic-city-tab.active {
+  background: linear-gradient(135deg, rgba(246, 36, 64, 0.28) 0%, rgba(255, 229, 191, 0.12) 100%) !important;
+  border-color: #F62440 !important;
+  color: #FFFAF3 !important;
+  box-shadow: 0 0 20px rgba(246, 36, 64, 0.35) !important;
+}
+
+.agentic-city-tab .tab-count {
+  background: rgba(255, 229, 191, 0.14) !important;
+  color: #FFE5BF !important;
+}
+
+.agentic-city-tab.active .tab-count {
+  background: #F62440 !important;
+  color: #FFFAF3 !important;
+}
+
+.agentic-filter-toggle {
+  background: rgba(255, 229, 191, 0.05) !important;
+  border: 1px solid rgba(255, 229, 191, 0.12) !important;
+  color: #FFF2DB !important;
+}
+
+.agentic-filter-toggle:hover {
+  border-color: rgba(255, 229, 191, 0.28) !important;
+  color: #FFFAF3 !important;
+}
+
+.agentic-filter-toggle.active {
+  background: rgba(246, 36, 64, 0.2) !important;
+  border-color: #F62440 !important;
+  color: #FFFAF3 !important;
+}
+
+.stat-pulse {
+  background: #F62440 !important;
+  box-shadow: 0 0 10px #F62440 !important;
+}
+
+.stat-city-highlight {
+  color: #FFE5BF !important;
+}
+
+/* 9. Telemetry & Hero Components */
+.kage-telemetry-card {
+  background: rgba(12, 14, 24, 0.28) !important;
+  border: 1px solid rgba(255, 229, 191, 0.14) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 242, 219, 0.1), 0 12px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+.kage-telemetry-card:hover {
+  border-color: rgba(246, 36, 64, 0.5) !important;
+  background: rgba(18, 22, 36, 0.4) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 242, 219, 0.2), 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(246, 36, 64, 0.2) !important;
+}
+
+.kage-telemetry-value {
+  color: #FFFAF3 !important;
+}
+
+.kage-telemetry-label {
+  color: #FFE5BF !important;
+}
+
+.kage-live-dot {
+  background: #F62440 !important;
+  box-shadow: 0 0 12px #F62440 !important;
+}
+
+.kage-eyebrow-city {
+  color: #FFE5BF !important;
+}
+
+.kage-glossy-pill {
+  background: rgba(255, 229, 191, 0.06) !important;
+  border: 1px solid rgba(255, 229, 191, 0.16) !important;
+  color: #FFF2DB !important;
+}
+
+.kage-glossy-pill:hover {
+  background: rgba(246, 36, 64, 0.2) !important;
+  border-color: #F62440 !important;
+  color: #FFFAF3 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 18px rgba(246, 36, 64, 0.35) !important;
+}
+
+.kage-chapter-chip:hover .kage-chapter-num {
+  color: #F62440 !important;
+}
+
+.kage-chapter-chip:hover .kage-chapter-info b {
+  color: #FFE5BF !important;
+}
+
+.kage-chapter-info p {
+  color: rgba(255, 242, 219, 0.7) !important;
+}
+
+.kage-stat-item .stat-val {
+  color: #FFFAF3 !important;
+}
+
+.kage-stat-item .stat-desc {
+  color: #FFE5BF !important;
+}
+
+/* 10. Forms, Modals & Cart Summary Glass */
+.mentor-form-card,
+.updateprofile form,
+#order_summary,
+.cart-item-card,
+.user-menu-dropdown {
+  background: rgba(12, 14, 24, 0.35) !important;
+  border: 1px solid rgba(255, 229, 191, 0.16) !important;
+  backdrop-filter: blur(22px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(180%) !important;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 242, 219, 0.12) !important;
+  border-radius: 20px !important;
+}
+
+.form-control {
+  background: rgba(12, 14, 24, 0.45) !important;
+  border: 1px solid rgba(255, 229, 191, 0.16) !important;
+  color: #FFFAF3 !important;
+}
+
+.form-control:focus {
+  border-color: #F62440 !important;
+  box-shadow: 0 0 18px rgba(246, 36, 64, 0.3) !important;
+  color: #FFFAF3 !important;
+}
+
+.user-menu-trigger {
+  background: rgba(255, 229, 191, 0.08) !important;
+  border: 1px solid rgba(255, 229, 191, 0.16) !important;
+}
+
+.user-menu-trigger:hover {
+  border-color: #F62440 !important;
+  background: rgba(255, 229, 191, 0.14) !important;
+}
+
+.avatar-nav {
+  border: 2px solid #F62440 !important;
+}
+
+.user-menu-dropdown a:hover,
+.user-menu-dropdown button:hover {
+  background: rgba(246, 36, 64, 0.18) !important;
+  color: #FFFAF3 !important;
+}
