@@ -21,6 +21,7 @@ import Cart from "./components/cart/Cart";
 import OrderSuccessRestored from "./components/cart/OrderSuccessRestored";
 import ListOrdersRestored from "./components/order/ListOrdersRestored";
 import OrderDetailsRestored from "./components/order/OrderDetailsRestored";
+import CulinaryCanvas from "./components/layout/CulinaryCanvas";
 
 function App() {
   useEffect(() => {
@@ -34,6 +35,7 @@ function App() {
     <ToastContainer/>
     <Router>
       <div className="App">
+        <CulinaryCanvas />
         <Header />
 
         <div className="app-shell mt-4">

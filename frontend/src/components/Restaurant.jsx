@@ -20,87 +20,117 @@ const Restaurant = ({
   const hasInsights = Boolean(sentiment || bullets.length > 0 || topMentions.length > 0);
 
   return (
-    <div className="col-sm-12 col-md-6 col-lg-3 my-3">
-      <div className="card p-3 rounded">
-        <Link
-          to={`/eats/stores/${restaurant._id}/menus`}
-          className="btn btn-block"
-        >
-          <img
-            className="card-img-top mx-auto"
-            src={restaurant.images?.[0]?.url || "/images/template.jpeg"}
-            alt={restaurant.name}
-          />
-        </Link>
+    <div className="col-sm-12 col-md-6 col-lg-4 my-3">
+      <div className="agentic-card h-100 d-flex flex-column">
+        {/* Media Frame with Overlay Badges */}
+        <div className="agentic-card-media-wrapper">
+          <Link
+            to={`/eats/stores/${restaurant._id}/menus`}
+            className="agentic-card-link"
+          >
+            <img
+              className="agentic-card-img"
+              src={restaurant.images?.[0]?.url || "/images/template.jpeg"}
+              alt={restaurant.name}
+              loading="lazy"
+            />
+            <div className="agentic-card-gradient-overlay" />
+          </Link>
 
-        <div className="card-body d-flex flex-column">
-          <div className="d-flex justify-content-between align-items-center mb-2">
-            <span className="badge badge-pill badge-light text-dark font-weight-bold" style={{ border: "1px solid #ddd", fontSize: "0.78rem", padding: "0.3rem 0.6rem" }}>
+          {/* Floating Badges */}
+          <div className="agentic-floating-badges top-badges">
+            <span className="agentic-badge-city">
               📍 {restaurant.city || "Bangalore"}
             </span>
-            <span className={`badge badge-pill font-weight-bold ${restaurant.isVeg ? "badge-success" : "badge-secondary"}`} style={{ fontSize: "0.72rem", padding: "0.3rem 0.6rem" }}>
-              {restaurant.isVeg ? "🟢 Pure Veg" : "🔴 Non-Veg"}
+            <span
+              className={`agentic-badge-diet ${
+                restaurant.isVeg ? "diet-veg" : "diet-nonveg"
+              }`}
+            >
+              <span className="diet-dot" />
+              {restaurant.isVeg ? "PURE VEG" : "NON-VEG"}
             </span>
           </div>
 
-          <h5 className="card-title font-weight-bold mb-1">{restaurant.name}</h5>
-          <p className="rest_address text-muted mb-2" style={{ fontSize: "0.85rem", lineHeight: "1.3" }}>{restaurant.address}</p>
-
-          <div className="ratings mt-auto">
-            <div className="rating-outer">
-              <div
-                className="rating-inner"
-                style={{ width: `${(restaurant.ratings / 5) * 100}%` }}
-              ></div>
-            </div>
-
-            <span id="no_of_reviews">
-              ({reviewCount} Reviews)
+          <div className="agentic-floating-badges bottom-badges">
+            <span className="agentic-badge-rating">
+              <span className="star-icon">★</span> {restaurant.ratings?.toFixed(1) || "4.8"}
+              <span className="review-count">({reviewCount})</span>
             </span>
           </div>
+        </div>
 
+        {/* Card Body */}
+        <div className="agentic-card-body d-flex flex-column flex-grow-1 p-3">
+          <h3 className="agentic-card-title mb-1">
+            <Link to={`/eats/stores/${restaurant._id}/menus`}>
+              {restaurant.name}
+            </Link>
+          </h3>
+
+          <p className="agentic-card-address mb-3">
+            <span className="pin-symbol">⌖</span> {restaurant.address}
+          </p>
+
+          {/* AI Taste Radar / Insights */}
           {hasInsights ? (
-            <div className="ai-insights-card mt-3">
-              <div className="ai-insights-title">AI Insights</div>
-              <div className="ai-insights-sentiment">
-                Sentiment: <strong>{sentiment || "neutral"}</strong>
+            <div className="agentic-ai-box mb-3">
+              <div className="agentic-ai-header">
+                <span className="ai-sparkle">✨</span>
+                <span className="ai-title">AI TASTE RADAR</span>
+                <span className={`ai-sentiment-pill sentiment-${sentiment || "positive"}`}>
+                  {sentiment ? sentiment.toUpperCase() : "POSITIVE"}
+                </span>
               </div>
 
               {bullets.length > 0 ? (
-                <ul className="ai-insights-list">
-                  {bullets.map((bullet, index) => (
-                    <li key={`${restaurant._id}-insight-${index}`}>{bullet}</li>
-                  ))}
-                </ul>
+                <p className="agentic-ai-summary mb-2">
+                  {bullets[0]}
+                </p>
               ) : null}
 
               {topMentions.length > 0 ? (
-                <div className="ai-insights-top">
-                  Top: {topMentions.join(", ")}
+                <div className="agentic-ai-tags">
+                  {topMentions.slice(0, 3).map((tag, idx) => (
+                    <span key={idx} className="ai-tag">
+                      #{tag}
+                    </span>
+                  ))}
                 </div>
               ) : null}
             </div>
           ) : null}
 
-          {isAdmin && reviewCount > 0 && !hasInsights ? (
-            <button
-              className="btn btn-outline-success btn-sm mt-3"
-              onClick={() => onAnalyze?.(restaurant._id)}
-              disabled={analyzing}
+          {/* Card Footer Actions */}
+          <div className="agentic-card-footer mt-auto pt-2">
+            <Link
+              to={`/eats/stores/${restaurant._id}/menus`}
+              className="agentic-order-btn btn btn-block"
             >
-              {analyzing ? "Analyzing..." : "Generate AI Insights"}
-            </button>
-          ) : null}
+              <span>Explore Menu</span>
+              <span className="arrow-glide">→</span>
+            </Link>
 
-          {isAdmin ? (
-            <button
-              className="btn btn-danger btn-sm mt-3"
-              onClick={() => onDelete?.(restaurant._id)}
-              disabled={deleting}
-            >
-              {deleting ? "Deleting..." : "Delete"}
-            </button>
-          ) : null}
+            {isAdmin && reviewCount > 0 && !hasInsights ? (
+              <button
+                className="btn btn-outline-info btn-sm btn-block mt-2"
+                onClick={() => onAnalyze?.(restaurant._id)}
+                disabled={analyzing}
+              >
+                {analyzing ? "Analyzing..." : "Generate AI Insights"}
+              </button>
+            ) : null}
+
+            {isAdmin ? (
+              <button
+                className="btn btn-outline-danger btn-sm btn-block mt-2"
+                onClick={() => onDelete?.(restaurant._id)}
+                disabled={deleting}
+              >
+                {deleting ? "Deleting..." : "Delete Restaurant"}
+              </button>
+            ) : null}
+          </div>
         </div>
       </div>
     </div>

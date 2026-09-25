@@ -18,6 +18,7 @@ import Restaurant from "./Restaurant";
 import Loader from "./layout/Loader";
 import Message from "./Message";
 import CountRestaurant from "./CountRestaurant";
+import HeroSection from "./layout/HeroSection";
 
 const initialRestaurantForm = {
   name: "",
@@ -115,26 +116,46 @@ const Home = () => {
 
   return (
     <>
-      <CountRestaurant />
-
-      {restaurantsLoading ? (
-        <Loader />
-      ) : restaurantsError ? (
-        <Message variant="danger">{restaurantErrorMessage}</Message>
+      {/* Hero Section displayed on default browse mode */}
+      {keyword ? (
+        <div className="agentic-search-banner mb-4">
+          <div className="d-flex align-items-center justify-content-between flex-wrap">
+            <div>
+              <span className="search-query-tag">Search query:</span>
+              <h2 className="search-query-title">“{keyword}”</h2>
+              <span className="search-matches-pill">
+                {visibleRestaurants.length} kitchens found in {selectedCity === "All" ? "All Metros" : selectedCity}
+              </span>
+            </div>
+            <button
+              type="button"
+              className="btn btn-outline-light btn-sm mt-2 mt-md-0"
+              onClick={() => {
+                dispatch(setSelectedCity("All"));
+                window.location.href = "/";
+              }}
+            >
+              ✕ Clear Search
+            </button>
+          </div>
+        </div>
       ) : (
-        <section>
-          <div className="city-filter-container mb-3 d-flex flex-wrap align-items-center">
-            <span className="city-filter-title mr-2 font-weight-bold">
-              📍 Select City:
-            </span>
+        <HeroSection />
+      )}
+
+      {/* Agentic Command Console */}
+      <div className="agentic-console mb-4">
+        {/* City Switcher Tabs */}
+        <div className="agentic-city-tabs">
+          <div className="agentic-city-tabs-scroll">
             {[
-              { id: "All", label: "🌟 All Cities (27)" },
-              { id: "Bangalore", label: "Bangalore (6)" },
-              { id: "Mumbai", label: "Mumbai (5)" },
-              { id: "Delhi", label: "Delhi (5)" },
-              { id: "Hyderabad", label: "Hyderabad (5)" },
-              { id: "Pune", label: "Pune (3)" },
-              { id: "Chennai", label: "Chennai (3)" },
+              { id: "All", label: "All Metros", icon: "🌐", count: "27" },
+              { id: "Bangalore", label: "Bangalore", icon: "📍", count: "6" },
+              { id: "Mumbai", label: "Mumbai", icon: "📍", count: "5" },
+              { id: "Delhi", label: "Delhi NCR", icon: "📍", count: "5" },
+              { id: "Hyderabad", label: "Hyderabad", icon: "📍", count: "5" },
+              { id: "Pune", label: "Pune", icon: "📍", count: "3" },
+              { id: "Chennai", label: "Chennai", icon: "📍", count: "3" },
             ].map((cityItem) => {
               const isActive =
                 selectedCity.toLowerCase() === cityItem.id.toLowerCase();
@@ -142,36 +163,68 @@ const Home = () => {
                 <button
                   key={cityItem.id}
                   type="button"
-                  className={`city-chip btn btn-sm m-1 ${
-                    isActive ? "city-chip-active btn-primary" : "btn-light border text-dark"
-                  }`}
+                  className={`agentic-city-tab ${isActive ? "active" : ""}`}
                   onClick={() => {
                     localStorage.setItem("cityOverridden", "true");
                     dispatch(setSelectedCity(cityItem.id));
                   }}
                 >
-                  {cityItem.label}
+                  <span className="tab-icon">{cityItem.icon}</span>
+                  <span className="tab-label">{cityItem.label}</span>
+                  <span className="tab-count">{cityItem.count}</span>
                 </button>
               );
             })}
           </div>
+        </div>
 
-          <div className="sort">
+        {/* Filter & Sorting Controls */}
+        <div className="agentic-filter-bar mt-3 d-flex justify-content-between align-items-center flex-wrap">
+          <div className="agentic-quick-filters d-flex align-items-center flex-wrap">
             <button
-              className={`sort_veg p-3 ${showVegOnly ? "is-active" : ""}`}
+              type="button"
+              className={`agentic-filter-toggle ${showVegOnly ? "active veg-active" : ""}`}
               onClick={handleToggleVegOnly}
             >
-              {showVegOnly ? "Show All" : "Pure Veg"}
+              <span className="filter-dot veg-dot" />
+              {showVegOnly ? "Pure Veg Active" : "Pure Veg Only"}
             </button>
 
-            <button className="sort_rev p-3" onClick={handleSortByReviews}>
-              Sort By Reviews
+            <button
+              type="button"
+              className="agentic-filter-toggle"
+              onClick={handleSortByRatings}
+            >
+              <span className="filter-star">★</span> Highest Rated
             </button>
 
-            <button className="sort_rate p-3" onClick={handleSortByRatings}>
-              Sort By Ratings
+            <button
+              type="button"
+              className="agentic-filter-toggle"
+              onClick={handleSortByReviews}
+            >
+              <span className="filter-chat">💬</span> Most Reviewed
             </button>
           </div>
+
+          <div className="agentic-results-stat mt-2 mt-md-0">
+            <span className="stat-pulse" />
+            <span className="stat-text">
+              <strong>{visibleRestaurants.length}</strong> restaurants active in{" "}
+              <span className="stat-city-highlight">
+                {selectedCity === "All" ? "all cities" : selectedCity}
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {restaurantsLoading ? (
+        <Loader />
+      ) : restaurantsError ? (
+        <Message variant="danger">{restaurantErrorMessage}</Message>
+      ) : (
+        <section>
 
           <div className="row mt-4">
             {visibleRestaurants.length > 0 ? (

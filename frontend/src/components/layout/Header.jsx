@@ -62,27 +62,31 @@ const Header = () => {
     location.pathname.startsWith("/eats/stores/search/");
 
   return (
-    <nav className="navbar row sticky-top align-items-center mx-0">
+    <nav className="navbar row sticky-top align-items-center mx-0 agentic-navbar">
       <div className="col-12 col-md-3 text-center text-md-left">
-        <Link to="/" className="d-inline-block">
-          <img src="/images/logo.webp" alt="Food Order Logo" className="logo" />
+        <Link to="/" className="d-inline-flex align-items-center text-decoration-none agentic-brand">
+          <img src="/images/logo.webp" alt="Food Order Logo" className="logo mr-2" />
+          <div className="agentic-brand-text text-left">
+            <span className="brand-name">NEO<span className="brand-accent">CULINARY</span></span>
+            <span className="brand-tagline">ICONIC DINING INTELLIGENCE</span>
+          </div>
         </Link>
       </div>
 
       <div className="col-12 col-md-6 mt-2 mt-md-0 d-flex align-items-center">
         {showSearch ? (
           <>
-            <div className="header-location-wrapper mr-2 d-none d-sm-block">
+            <div className="header-location-wrapper mr-2">
               <select
                 className="header-location-select"
                 value={selectedCity}
                 onChange={handleCityChange}
                 title="Delivery Location"
               >
-                <option value="All">📍 All Cities (27)</option>
+                <option value="All">📍 All Metros (27)</option>
                 <option value="Bangalore">📍 Bangalore (6)</option>
                 <option value="Mumbai">📍 Mumbai (5)</option>
-                <option value="Delhi">📍 Delhi (5)</option>
+                <option value="Delhi">📍 Delhi NCR (5)</option>
                 <option value="Hyderabad">📍 Hyderabad (5)</option>
                 <option value="Pune">📍 Pune (3)</option>
                 <option value="Chennai">📍 Chennai (3)</option>
@@ -97,11 +101,10 @@ const Header = () => {
 
       <div className="col-12 col-md-3 mt-3 mt-md-0 text-center">
         <div className="d-flex justify-content-center justify-content-md-end align-items-center">
-          <Link to="/cart" className="text-decoration-none">
-            <span className="ml-3" id="cart">
-              Cart
-            </span>
-            <span className="ml-1" id="cart_count">
+          <Link to="/cart" className="text-decoration-none agentic-cart-pill">
+            <span className="cart-icon">🛍️</span>
+            <span className="cart-label ml-1">Cart</span>
+            <span className="cart-badge ml-2" id="cart_count">
               {cartCount}
             </span>
           </Link>
