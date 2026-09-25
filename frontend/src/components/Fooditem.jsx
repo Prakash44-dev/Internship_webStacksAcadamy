@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   addItemToCart,
   removeItemFromCart,
@@ -22,7 +23,9 @@ const Fooditem = ({
 
   const { cartItems } = useSelector((state) => state.cart);
 
-  const cartItem = cartItems.find((item) => item.foodItem._id === fooditem._id);
+  const cartItem = (cartItems || []).find(
+    (item) => (item?.foodItem?._id || item?.foodItem) === fooditem?._id
+  );
   const quantity = cartItem?.quantity ?? 1;
   const showButtons = Boolean(cartItem);
 
@@ -30,19 +33,19 @@ const Fooditem = ({
   const decreaseQty = () => {
     if (quantity > 1) {
       const newQuantity = quantity - 1;
-      dispatch(updateCartQuantity(fooditem._id, newQuantity));
+      dispatch(updateCartQuantity(fooditem?._id, newQuantity));
     } else {
-      dispatch(removeItemFromCart(fooditem._id));
+      dispatch(removeItemFromCart(fooditem?._id));
     }
   };
 
   // ➕ increase
   const increaseQty = () => {
-    if (quantity < fooditem.stock) {
+    if (quantity < (fooditem?.stock || 0)) {
       const newQuantity = quantity + 1;
-      dispatch(updateCartQuantity(fooditem._id, newQuantity));
+      dispatch(updateCartQuantity(fooditem?._id, newQuantity));
     } else {
-      alert("Exceeded stock limit");
+      toast.error("Exceeded stock limit");
     }
   };
 
@@ -52,7 +55,7 @@ const Fooditem = ({
       return;
     }
 
-    dispatch(addItemToCart(fooditem._id, restaurant, quantity));
+    dispatch(addItemToCart(fooditem?._id, restaurant, quantity));
   };
 
   return (
@@ -60,25 +63,25 @@ const Fooditem = ({
       <div className="card p-3 rounded">
         <img
           className="card-img-top mx-auto"
-          src={fooditem.images?.[0]?.url || "/images/template.jpeg"}
-          alt={fooditem.name}
+          src={fooditem?.images?.[0]?.url || "/images/template.jpeg"}
+          alt={fooditem?.name || "Food Item"}
         />
 
         <div className="card-body d-flex flex-column">
-          <h5 className="card-title">{fooditem.name}</h5>
+          <h5 className="card-title">{fooditem?.name}</h5>
 
-          <p className="fooditem_des">{fooditem.description}</p>
+          <p className="fooditem_des">{fooditem?.description}</p>
 
           <p className="card-text">
             {"\u20B9"}
-            {fooditem.price}
+            {fooditem?.price}
           </p>
 
           {!isAdmin && !showButtons ? (
             <button
               id="cart_btn"
               className="btn btn-primary ml-4"
-              disabled={fooditem.stock === 0}
+              disabled={!fooditem?.stock || fooditem.stock === 0}
               onClick={addToCartHandler}
             >
               Add to Cart
@@ -107,7 +110,7 @@ const Fooditem = ({
           {isAdmin ? (
             <button
               className="btn btn-danger btn-sm mt-3"
-              onClick={() => onDelete?.(fooditem._id)}
+              onClick={() => onDelete?.(fooditem?._id)}
               disabled={deleting}
             >
               {deleting ? "Deleting..." : "Delete"}
@@ -118,8 +121,8 @@ const Fooditem = ({
 
           <p>
             Status:
-            <span className={fooditem.stock > 0 ? "greenColor" : "redColor"}>
-              {fooditem.stock > 0 ? "In Stock" : "Out of Stock"}
+            <span className={(fooditem?.stock || 0) > 0 ? "greenColor" : "redColor"}>
+              {(fooditem?.stock || 0) > 0 ? "In Stock" : "Out of Stock"}
             </span>
           </p>
         </div>

@@ -1,6 +1,7 @@
 // Load env variables FIRST
+const path = require("path");
 const dotenv = require("dotenv");
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: path.join(__dirname, "config", "config.env") });
 
 // Handle Uncaught exceptions
 process.on("uncaughtException", (err) => {

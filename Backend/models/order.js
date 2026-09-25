@@ -108,6 +108,7 @@ const orderSchema = mongoose.Schema(
   },
 );
 orderSchema.pre("save", async function () {
+  if (!this.isNew) return;
   for (const orderItem of this.orderItems) {
     const foodItem = await mongoose.model("FoodItem").findById(orderItem.fooditem);
 

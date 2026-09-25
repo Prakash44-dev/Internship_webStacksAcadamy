@@ -28,7 +28,8 @@ exports.signup = catchAsyncErrors(async (req, res, next) => {
 
   } else {
 
-    const result = await cloudinary.uploader.upload(req.body.avatar, {
+    try {
+      const result = await cloudinary.uploader.upload(req.body.avatar, {
       folder: "avatars",
       width: 150,
       crop: "scale",
@@ -38,6 +39,12 @@ exports.signup = catchAsyncErrors(async (req, res, next) => {
       public_id: result.public_id,
       url: result.secure_url,
     };
+    } catch (err) {
+      avatar = {
+        public_id: "default",
+        url: "/images/images.png",
+      };
+    }
   }
 
   const user = await User.create({
@@ -181,15 +188,22 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     email: req.body.email,
   };
 
-  if (req.body.avatar !== "") {
+  if (req.body.avatar && typeof req.body.avatar === "string" && req.body.avatar.trim() !== "" && !req.body.avatar.startsWith("/images/")) {
 
     const user = await User.findById(req.user.id);
 
-    const image_id = user.avatar.public_id;
+    const image_id = user?.avatar?.public_id;
 
-    await cloudinary.uploader.destroy(image_id);
+    if (image_id && image_id !== "default") {
+      try {
+        await cloudinary.uploader.destroy(image_id);
+      } catch (err) {
+        console.error("Cloudinary destroy error:", err.message);
+      }
+    }
 
-    const result = await cloudinary.uploader.upload(req.body.avatar, {
+    try {
+      const result = await cloudinary.uploader.upload(req.body.avatar, {
       folder: "avatars",
       width: 150,
       crop: "scale",
@@ -199,6 +213,9 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
       public_id: result.public_id,
       url: result.secure_url,
     };
+    } catch (err) {
+      console.error("Cloudinary upload error:", err.message);
+    }
   }
 
   await User.findByIdAndUpdate(req.user.id, newUserData, {

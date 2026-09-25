@@ -7,8 +7,12 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const dotenv = require("dotenv");
 
 //setting up config file
-dotenv.config({ path: "./config/config.env" });
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const getStripe = () => {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new ErrorHandler("Stripe secret key is not configured on the server", 500);
+  }
+  return require("stripe")(process.env.STRIPE_SECRET_KEY);
+};
 
 const getCheckoutAddress = (session) =>
   session?.shipping_details?.address ||
@@ -24,6 +28,7 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Stripe session id is required", 400));
   }
 
+  const stripe = getStripe();
   const session = await stripe.checkout.sessions.retrieve(session_id, {
     expand: ["customer"],
   });
@@ -68,7 +73,7 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   let orderItems = cart.items.map((item) => ({
     name: item.foodItem.name,
     quantity: item.quantity,
-    image: item.foodItem.images[0].url,
+    image: item.foodItem?.images?.[0]?.url || "/images/template.jpeg",
     price: item.foodItem.price,
     fooditem: item.foodItem._id,
   }));

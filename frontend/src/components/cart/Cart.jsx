@@ -15,11 +15,16 @@ const Cart = () => {
     (state) => state.cart,
   );
   const { paymentLoading, paymentError } = useSelector((state) => state.order);
-  const itemsSubtotal = cartItems.reduce(
-    (acc, item) => acc + item.quantity * Number(item.foodItem.price),
+
+  const validCartItems = (cartItems || []).filter(
+    (item) => item && item.foodItem && typeof item.foodItem === "object"
+  );
+
+  const itemsSubtotal = validCartItems.reduce(
+    (acc, item) => acc + item.quantity * Number(item.foodItem.price || 0),
     0,
   );
-  const deliveryCharge = cartItems.length > 0 ? 55 : 0;
+  const deliveryCharge = validCartItems.length > 0 ? 55 : 0;
   const totalDue = itemsSubtotal + deliveryCharge;
 
   useEffect(() => {
@@ -33,11 +38,13 @@ const Cart = () => {
   }, [paymentError]);
 
   const removeCartItemHandler = (id) => {
+    if (!id) return;
     dispatch(removeItemFromCart(id));
     toast.success("Item removed from cart");
   };
 
   const increaseQty = (id, quantity, stock) => {
+    if (!id) return;
     const newQty = quantity + 1;
     if (newQty > stock) {
       toast.error("Exceeded stock limit");
@@ -47,6 +54,7 @@ const Cart = () => {
   };
 
   const decreaseQty = (id, quantity) => {
+    if (!id) return;
     if (quantity > 1) {
       const newQty = quantity - 1;
       dispatch(updateCartQuantity(id, newQty));
@@ -56,12 +64,12 @@ const Cart = () => {
   };
 
   const checkoutHandler = () => {
-    if (cartItems.length === 0) {
+    if (validCartItems.length === 0) {
       toast.error("Your cart is empty");
       return;
     }
 
-    dispatch(startPayment(cartItems));
+    dispatch(startPayment(validCartItems));
   };
 
   return (
@@ -70,41 +78,41 @@ const Cart = () => {
         <h2 className="mt-5">Loading cart...</h2>
       ) : error ? (
         <h2 className="mt-5">{error}</h2>
-      ) : cartItems.length === 0 ? (
+      ) : validCartItems.length === 0 ? (
         <h2 className="mt-5">Your Cart is empty</h2>
       ) : (
         <>
           <h2 className="mt-5">
             Your Cart:{" "}
             <b>
-              {cartItems.reduce((acc, item) => acc + Number(item.quantity), 0)}{" "}
+              {validCartItems.reduce((acc, item) => acc + Number(item.quantity || 0), 0)}{" "}
               items
             </b>
           </h2>
           <h3 className="mt-5">
-            Restaurant: <b>{restaurantInfo?.name}</b>
+            Restaurant: <b>{restaurantInfo?.name || "Restaurant"}</b>
           </h3>
 
           <div className="row d-flex justify-content-between cartt">
             <div className="col-12 col-lg-8">
-              {cartItems.map((item) => (
-                <div className="cart-item" key={item._id}>
+              {validCartItems.map((item) => (
+                <div className="cart-item" key={item._id || item.foodItem?._id}>
                   <div className="row">
                     <div className="col-4 col-lg-3">
                       <img
-                        src={item.foodItem.images[0].url}
-                        alt="items"
+                        src={item.foodItem?.images?.[0]?.url || "/images/template.jpeg"}
+                        alt={item.foodItem?.name || "items"}
                         height="90"
                         width="115"
                       />
                     </div>
 
-                    <div className="col-5 col-lg-3">{item.foodItem.name}</div>
+                    <div className="col-5 col-lg-3">{item.foodItem?.name || "Unknown item"}</div>
 
                     <div className="col-4 col-lg-2 mt-4 mt-lg-0">
                       <p id="card_item_price">
                         {"\u20B9"}
-                        {item.foodItem.price}
+                        {item.foodItem?.price ?? 0}
                       </p>
                     </div>
 
@@ -113,7 +121,7 @@ const Cart = () => {
                         <span
                           className="btn btn-danger minus"
                           onClick={() =>
-                            decreaseQty(item.foodItem._id, item.quantity)
+                            decreaseQty(item.foodItem?._id, item.quantity)
                           }
                         >
                           -
@@ -130,9 +138,9 @@ const Cart = () => {
                           className="btn btn-primary plus"
                           onClick={() =>
                             increaseQty(
-                              item.foodItem._id,
+                              item.foodItem?._id,
                               item.quantity,
-                              item.foodItem.stock,
+                              item.foodItem?.stock || 0,
                             )
                           }
                         >
@@ -145,7 +153,7 @@ const Cart = () => {
                       <i
                         id="delete_cart_item"
                         className="fa fa-trash btn btn-danger"
-                        onClick={() => removeCartItemHandler(item.foodItem._id)}
+                        onClick={() => removeCartItemHandler(item.foodItem?._id)}
                       ></i>
                     </div>
                   </div>
@@ -162,8 +170,8 @@ const Cart = () => {
                 <p>
                   Subtotal:
                   <span className="order-summary-values">
-                    {cartItems.reduce(
-                      (acc, item) => acc + Number(item.quantity),
+                    {validCartItems.reduce(
+                      (acc, item) => acc + Number(item.quantity || 0),
                       0,
                     )}
                     (Units)
