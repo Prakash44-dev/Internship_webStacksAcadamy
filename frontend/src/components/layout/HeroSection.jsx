@@ -1,8 +1,7 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSelectedCity } from "../../redux/slices/restaurantSlice";
-import CulinarySanctumWorld from "./CulinarySanctumWorld";
 
 const HeroSection = () => {
   const dispatch = useDispatch();
@@ -12,102 +11,172 @@ const HeroSection = () => {
   );
 
   const quickDishes = [
-    { label: "Biryani", query: "Biryani" },
-    { label: "Dosa", query: "Dosa" },
-    { label: "Butter Chicken", query: "Butter Chicken" },
-    { label: "Pav Bhaji", query: "Pav Bhaji" },
-    { label: "Haleem", query: "Haleem" },
-    { label: "Ice Cream", query: "Chocolate" },
+    { label: "Hyderabadi Biryani", query: "Biryani" },
+    { label: "Crispy Masala Dosa", query: "Dosa" },
+    { label: "Old Delhi Butter Chicken", query: "Butter Chicken" },
+    { label: "Mumbai Pav Bhaji", query: "Pav Bhaji" },
+    { label: "Royal Haleem", query: "Haleem" },
+    { label: "Artisan Mithai", query: "Sweet" },
   ];
 
   const handleQuickSearch = (keyword) => {
     navigate(`/eats/stores/search/${encodeURIComponent(keyword)}`);
   };
 
-  const scrollToKitchens = () => {
-    const el = document.getElementById("kitchens-console");
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
   return (
-    <section className="agentic-hero-section">
-      <div className="agentic-hero-glow agentic-hero-glow-1" />
-      <div className="agentic-hero-glow agentic-hero-glow-2" />
+    <section className="kage-hero-section">
+      {/* Background radial atmosphere */}
+      <div className="kage-ambient-glow glow-top-left" />
+      <div className="kage-ambient-glow glow-top-right" />
 
-      <div className="agentic-hero-content text-center">
-        {/* Luminous Status Badge */}
-        <div className="agentic-badge-wrapper mb-3">
-          <div className="agentic-live-badge">
-            <span className="agentic-live-dot" />
-            <span className="agentic-live-text">FOOD ORDER NETWORK ACTIVE</span>
-            <span className="agentic-badge-divider">/</span>
-            <span className="agentic-badge-city">
-              {selectedCity === "All" ? "ALL 6 METROS" : selectedCity.toUpperCase()}
-            </span>
+      <div className="kage-hero-container">
+        {/* Floating Peek Card (Mughal Sanmon Architecture Peek) */}
+        <div 
+          className="kage-peek-card"
+          onClick={() => scrollToSection("kitchens-console")}
+          title="Jump to Living Kitchens"
+        >
+          <div className="kage-peek-media">
+            <img 
+              src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=600&auto=format&fit=crop&q=80" 
+              alt="Culinary Sanctum preview" 
+              className="kage-peek-img"
+            />
+            <div className="kage-peek-badge">
+              <span>EXPLORE</span>
+              <span className="peek-arrow">↗</span>
+            </div>
+          </div>
+          <div className="kage-peek-caption">
+            <b>IMPERIAL FEAST</b>
+            <i>27 LIVING KITCHENS</i>
           </div>
         </div>
 
-        {/* Hero Title */}
-        <h1 className="agentic-hero-title">
-          Taste The Legends.
-          <br />
-          <span className="agentic-gradient-text">
-            Step Into The Culinary Sanctum.
+        {/* Top Eyebrow Badge */}
+        <div className="kage-eyebrow-row">
+          <span className="kage-live-dot" />
+          <span className="kage-eyebrow-text font-mono">
+            FOOD ORDER • THE ARCHITECTURAL CULINARY EXPERIENCE
           </span>
+          <span className="kage-eyebrow-city font-mono">
+            / {selectedCity === "All" ? "ALL 6 METROS" : selectedCity.toUpperCase()}
+          </span>
+        </div>
+
+        {/* Grand Editorial Display Headline */}
+        <h1 className="kage-display-title">
+          <span className="kage-title-line">WHERE HUNGER MEETS</span>
+          <span className="kage-title-line kage-title-accent">THE SACRED HEARTH.</span>
         </h1>
 
-        {/* Hero Subtitle */}
-        <p className="agentic-hero-subtitle mx-auto">
-          An architectural journey through India's most celebrated heritage kitchens.
-          Step through the sacred spice vaults and live flame hearths to taste 27 legendary icons.
+        {/* Editorial Subtitle Lede */}
+        <p className="kage-editorial-lede">
+          A nocturnal pilgrimage through India's 27 living culinary institutions.
+          Charred tandoor embers, Kerala cardamom mists, and ancestral recipes
+          dispatched in real-time with AI taste intelligence.
         </p>
 
-        {/* Kage-Inspired 3D Three.js Architectural Experience */}
-        <div className="my-4">
-          <CulinarySanctumWorld onExploreKitchens={scrollToKitchens} />
-        </div>
-
         {/* Quick Suggestion Pills */}
-        <div className="agentic-quick-pills mt-4 d-flex flex-wrap justify-content-center align-items-center">
-          <span className="agentic-quick-label mr-2">Trending Cravings:</span>
-          {quickDishes.map((dish) => (
-            <button
-              key={dish.label}
-              type="button"
-              className="agentic-pill-btn"
-              onClick={() => handleQuickSearch(dish.query)}
-            >
-              🔥 {dish.label}
-            </button>
-          ))}
+        <div className="kage-quick-cravings-row">
+          <span className="kage-cravings-label font-mono">REVERED DISHES:</span>
+          <div className="d-flex flex-wrap gap-2">
+            {quickDishes.map((dish) => (
+              <button
+                key={dish.label}
+                type="button"
+                className="kage-glossy-pill"
+                onClick={() => handleQuickSearch(dish.query)}
+              >
+                <span className="kage-pill-flame">🔥</span>
+                <span>{dish.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* 4 Agentic Telemetry Metric Cards */}
-        <div className="agentic-metrics-grid mt-4">
-          <div className="agentic-metric-card">
-            <div className="agentic-metric-icon">⚡</div>
-            <div className="agentic-metric-value">24-35m</div>
-            <div className="agentic-metric-label">Average Hyperlocal Dispatch</div>
+        {/* 4 Motional Chapter Chips (Kage Chapter Navigation) */}
+        <div className="kage-chapters-grid mt-5">
+          <div
+            className="kage-chapter-chip"
+            onClick={() => scrollToSection("chapter-approach")}
+          >
+            <span className="kage-chapter-num font-mono">01</span>
+            <div className="kage-chapter-info">
+              <b>THE APPROACH</b>
+              <p>Threshold to India's Heritage Flavors</p>
+            </div>
           </div>
 
-          <div className="agentic-metric-card">
-            <div className="agentic-metric-icon">⭐</div>
-            <div className="agentic-metric-value">4.88 / 5</div>
-            <div className="agentic-metric-label">Curated Gourmet Ratings</div>
+          <div
+            className="kage-chapter-chip"
+            onClick={() => scrollToSection("chapter-flame")}
+          >
+            <span className="kage-chapter-num font-mono">02</span>
+            <div className="kage-chapter-info">
+              <b>THE SACRED HEARTH</b>
+              <p>900° Dum Pukht & Ancient Clay Ovens</p>
+            </div>
           </div>
 
-          <div className="agentic-metric-card">
-            <div className="agentic-metric-icon">🏛️</div>
-            <div className="agentic-metric-value">{count || 27}+</div>
-            <div className="agentic-metric-label">Iconic Real Restaurants</div>
+          <div
+            className="kage-chapter-chip"
+            onClick={() => scrollToSection("chapter-spices")}
+          >
+            <span className="kage-chapter-num font-mono">03</span>
+            <div className="kage-chapter-info">
+              <b>THE SPICE ARCHIVE</b>
+              <p>Curated Aromatics from 14 Terroirs</p>
+            </div>
           </div>
 
-          <div className="agentic-metric-card">
-            <div className="agentic-metric-icon">🤖</div>
-            <div className="agentic-metric-value">AI Radar</div>
-            <div className="agentic-metric-label">Live Sentiment & Taste Insights</div>
+          <div
+            className="kage-chapter-chip"
+            onClick={() => scrollToSection("kitchens-console")}
+          >
+            <span className="kage-chapter-num font-mono">04</span>
+            <div className="kage-chapter-info">
+              <b>THE GRAND BANQUET</b>
+              <p>27 Living Legends & AI Taste Radar</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 4 Glossy Telemetry Metric Cards */}
+        <div className="kage-telemetry-row mt-4">
+          <div className="kage-telemetry-card">
+            <div className="kage-telemetry-glow" />
+            <span className="kage-telemetry-icon">⚡</span>
+            <span className="kage-telemetry-value font-mono">24-35m</span>
+            <span className="kage-telemetry-label font-mono">AVERAGE DISPATCH</span>
+          </div>
+
+          <div className="kage-telemetry-card">
+            <div className="kage-telemetry-glow" />
+            <span className="kage-telemetry-icon">⭐</span>
+            <span className="kage-telemetry-value font-mono">4.88 / 5</span>
+            <span className="kage-telemetry-label font-mono">GOURMET RATING</span>
+          </div>
+
+          <div className="kage-telemetry-card">
+            <div className="kage-telemetry-glow" />
+            <span className="kage-telemetry-icon">🏛️</span>
+            <span className="kage-telemetry-value font-mono">{count || 27}+</span>
+            <span className="kage-telemetry-label font-mono">LIVING INSTITUTIONS</span>
+          </div>
+
+          <div className="kage-telemetry-card">
+            <div className="kage-telemetry-glow" />
+            <span className="kage-telemetry-icon">🤖</span>
+            <span className="kage-telemetry-value font-mono">AI RADAR</span>
+            <span className="kage-telemetry-label font-mono">SENTIMENT ANALYTICS</span>
           </div>
         </div>
       </div>

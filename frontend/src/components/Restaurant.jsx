@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 
 const Restaurant = ({
@@ -9,6 +9,8 @@ const Restaurant = ({
   onAnalyze,
   analyzing = false,
 }) => {
+  const cardRef = useRef(null);
+
   const sentiment = (restaurant.reviewSentiment || "").toLowerCase();
   const bullets = Array.isArray(restaurant.reviewSummaryBullets)
     ? restaurant.reviewSummaryBullets
@@ -19,9 +21,26 @@ const Restaurant = ({
   const reviewCount = restaurant.numOfReviews ?? restaurant.reviews?.length ?? 0;
   const hasInsights = Boolean(sentiment || bullets.length > 0 || topMentions.length > 0);
 
+  // Dynamic Cursor Spotlight Tracking
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    cardRef.current.style.setProperty("--mouse-x", `${x}px`);
+    cardRef.current.style.setProperty("--mouse-y", `${y}px`);
+  };
+
   return (
     <div className="col-sm-12 col-md-6 col-lg-4 my-3">
-      <div className="agentic-card h-100 d-flex flex-column">
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        className="agentic-card kage-glossy-card h-100 d-flex flex-column"
+      >
+        {/* Dynamic Specular Shimmer Layer */}
+        <div className="card-spotlight-layer" />
+
         {/* Media Frame with Overlay Badges */}
         <div className="agentic-card-media-wrapper">
           <Link
@@ -39,7 +58,7 @@ const Restaurant = ({
 
           {/* Floating Badges */}
           <div className="agentic-floating-badges top-badges">
-            <span className="agentic-badge-city">
+            <span className="agentic-badge-city font-mono">
               📍 {restaurant.city || "Bangalore"}
             </span>
             <span
@@ -48,12 +67,12 @@ const Restaurant = ({
               }`}
             >
               <span className="diet-dot" />
-              {restaurant.isVeg ? "PURE VEG" : "NON-VEG"}
+              {restaurant.isVeg ? "PURE VEG" : "GOURMET"}
             </span>
           </div>
 
           <div className="agentic-floating-badges bottom-badges">
-            <span className="agentic-badge-rating">
+            <span className="agentic-badge-rating font-mono">
               <span className="star-icon">★</span> {restaurant.ratings?.toFixed(1) || "4.8"}
               <span className="review-count">({reviewCount})</span>
             </span>
@@ -107,13 +126,13 @@ const Restaurant = ({
               to={`/eats/stores/${restaurant._id}/menus`}
               className="agentic-order-btn btn btn-block"
             >
-              <span>Explore Menu</span>
+              <span>Explore Living Menu</span>
               <span className="arrow-glide">→</span>
             </Link>
 
             {isAdmin && reviewCount > 0 && !hasInsights ? (
               <button
-                className="btn btn-outline-info btn-sm btn-block mt-2"
+                className="btn btn-outline-info btn-sm btn-block mt-2 font-mono"
                 onClick={() => onAnalyze?.(restaurant._id)}
                 disabled={analyzing}
               >
@@ -123,7 +142,7 @@ const Restaurant = ({
 
             {isAdmin ? (
               <button
-                className="btn btn-outline-danger btn-sm btn-block mt-2"
+                className="btn btn-outline-danger btn-sm btn-block mt-2 font-mono"
                 onClick={() => onDelete?.(restaurant._id)}
                 disabled={deleting}
               >
