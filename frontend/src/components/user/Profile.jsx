@@ -61,6 +61,16 @@ const Profile = () => {
                   <h4>Joined On</h4>
                   <p>{user?.createdAt ? String(user.createdAt).substring(0, 10) : "N/A"}</p>
                 </div>
+
+                <div className="profile-detail">
+                  <h4>Default City</h4>
+                  <p>📍 {user?.city || "Bangalore"}</p>
+                </div>
+
+                <div className="profile-detail">
+                  <h4>Delivery Address</h4>
+                  <p>{user?.address || "No address added yet"}</p>
+                </div>
               </div>
             </div>
           </div>

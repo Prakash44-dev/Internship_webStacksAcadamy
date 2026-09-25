@@ -63,6 +63,7 @@ const normalizeRestaurantPayload = (body) => {
 exports.getAllRestaurants = catchAsync(async (req, res, next) => {
   const apiFeatures = new APIFeatures(Restaurant.find(), req.query)
     .search()
+    .filterByCity()
     .sort();
   const restaurants = await apiFeatures.query;
 

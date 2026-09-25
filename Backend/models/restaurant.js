@@ -12,6 +12,12 @@ const restaurantSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    city: {
+      type: String,
+      default: "Bangalore",
+      trim: true,
+      index: true,
+    },
     address: {
       type: String,
       required: [true, "Please enter the restaurant address"],

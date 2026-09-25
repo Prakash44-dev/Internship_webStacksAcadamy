@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Search from "./Search";
 import { logout } from "../../redux/actions/userAction";
 import { clearCart, fetchCartItems } from "../../redux/actions/cartAction";
+import { setSelectedCity } from "../../redux/slices/restaurantSlice";
 import "../../App.css";
 
 const Header = () => {
@@ -14,8 +15,18 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { selectedCity = "All" } = useSelector((state) => state.restaurants);
   const { cartItems } = useSelector((state) => state.cart);
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+  const handleCityChange = (e) => {
+    const newCity = e.target.value;
+    localStorage.setItem("cityOverridden", "true");
+    dispatch(setSelectedCity(newCity));
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -58,8 +69,30 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="col-12 col-md-6 mt-2 mt-md-0">
-        {showSearch ? <Search /> : null}
+      <div className="col-12 col-md-6 mt-2 mt-md-0 d-flex align-items-center">
+        {showSearch ? (
+          <>
+            <div className="header-location-wrapper mr-2 d-none d-sm-block">
+              <select
+                className="header-location-select"
+                value={selectedCity}
+                onChange={handleCityChange}
+                title="Delivery Location"
+              >
+                <option value="All">📍 All Cities (27)</option>
+                <option value="Bangalore">📍 Bangalore (6)</option>
+                <option value="Mumbai">📍 Mumbai (5)</option>
+                <option value="Delhi">📍 Delhi (5)</option>
+                <option value="Hyderabad">📍 Hyderabad (5)</option>
+                <option value="Pune">📍 Pune (3)</option>
+                <option value="Chennai">📍 Chennai (3)</option>
+              </select>
+            </div>
+            <div className="flex-grow-1">
+              <Search />
+            </div>
+          </>
+        ) : null}
       </div>
 
       <div className="col-12 col-md-3 mt-3 mt-md-0 text-center">

@@ -13,9 +13,11 @@ const Register = () => {
     password: "",
     passwordConfirm: "",
     phoneNumber: "",
+    city: "Bangalore",
+    address: "",
   });
 
-  const { name, email, password, passwordConfirm, phoneNumber } = user;
+  const { name, email, password, passwordConfirm, phoneNumber, city, address } = user;
 
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("/images/images.png");
@@ -65,6 +67,8 @@ const Register = () => {
       password,
       passwordConfirm,
       phoneNumber,
+      city: city || "Bangalore",
+      address: address || "",
       avatar: avatar === "" ? "/images/images.png" : avatar,
     };
 
@@ -158,6 +162,36 @@ const Register = () => {
                 pattern="[0-9]{10}"
                 maxLength="10"
               ></input>
+            </div>
+            <div className="form-group">
+              <label htmlFor="city_field">Your City / Location</label>
+              <select
+                id="city_field"
+                className="form-control"
+                name="city"
+                value={city}
+                onChange={onChange}
+                required
+              >
+                <option value="Bangalore">Bangalore</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Pune">Pune</option>
+                <option value="Chennai">Chennai</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="address_field">Delivery Address / Locality</label>
+              <input
+                type="text"
+                id="address_field"
+                className="form-control"
+                name="address"
+                placeholder="e.g. Koramangala 5th Block, Indiranagar, etc."
+                value={address}
+                onChange={onChange}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="avatar_upload">Avatar</label>

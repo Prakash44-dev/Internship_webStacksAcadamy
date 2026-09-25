@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
+  setSelectedCity,
   sortByRatings,
   sortByReviews,
   toggleVegOnly,
@@ -37,6 +38,7 @@ const Home = () => {
     error: restaurantsError,
     restaurants,
     showVegOnly,
+    selectedCity = "All",
     creating,
     deleting,
     analyzing,
@@ -53,9 +55,16 @@ const Home = () => {
     [restaurants, showVegOnly],
   );
 
+  // Auto-select user's registered city when logged in if not explicitly overridden
   useEffect(() => {
-    dispatch(getAllRestaurants(keyword));
-  }, [dispatch, keyword]);
+    if (isAuthenticated && user?.city && !localStorage.getItem("cityOverridden")) {
+      dispatch(setSelectedCity(user.city));
+    }
+  }, [isAuthenticated, user?.city, dispatch]);
+
+  useEffect(() => {
+    dispatch(getAllRestaurants({ keyword, city: selectedCity }));
+  }, [dispatch, keyword, selectedCity]);
 
   const handleSortByRatings = () => {
     dispatch(sortByRatings());
@@ -114,6 +123,39 @@ const Home = () => {
         <Message variant="danger">{restaurantErrorMessage}</Message>
       ) : (
         <section>
+          <div className="city-filter-container mb-3 d-flex flex-wrap align-items-center">
+            <span className="city-filter-title mr-2 font-weight-bold">
+              📍 Select City:
+            </span>
+            {[
+              { id: "All", label: "🌟 All Cities (27)" },
+              { id: "Bangalore", label: "Bangalore (6)" },
+              { id: "Mumbai", label: "Mumbai (5)" },
+              { id: "Delhi", label: "Delhi (5)" },
+              { id: "Hyderabad", label: "Hyderabad (5)" },
+              { id: "Pune", label: "Pune (3)" },
+              { id: "Chennai", label: "Chennai (3)" },
+            ].map((cityItem) => {
+              const isActive =
+                selectedCity.toLowerCase() === cityItem.id.toLowerCase();
+              return (
+                <button
+                  key={cityItem.id}
+                  type="button"
+                  className={`city-chip btn btn-sm m-1 ${
+                    isActive ? "city-chip-active btn-primary" : "btn-light border text-dark"
+                  }`}
+                  onClick={() => {
+                    localStorage.setItem("cityOverridden", "true");
+                    dispatch(setSelectedCity(cityItem.id));
+                  }}
+                >
+                  {cityItem.label}
+                </button>
+              );
+            })}
+          </div>
+
           <div className="sort">
             <button
               className={`sort_veg p-3 ${showVegOnly ? "is-active" : ""}`}

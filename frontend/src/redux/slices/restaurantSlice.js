@@ -9,6 +9,7 @@ import {
 const initialState = {
   restaurants: [],
   count: 0,
+  selectedCity: localStorage.getItem("selectedCity") || "All",
   loading: false,
   error: null,
   showVegOnly: false,
@@ -25,6 +26,14 @@ const restaurantSlice = createSlice({
   name: "restaurants",
   initialState,
   reducers: {
+    setSelectedCity: (state, action) => {
+      state.selectedCity = action.payload;
+      try {
+        localStorage.setItem("selectedCity", action.payload);
+      } catch (e) {
+        // ignore
+      }
+    },
     sortByRatings: (state) => {
       state.restaurants.sort((a, b) => b.ratings - a.ratings);
     },
@@ -118,7 +127,12 @@ const restaurantSlice = createSlice({
   },
 });
 
-export const { sortByRatings, sortByReviews, toggleVegOnly, clearError } =
-  restaurantSlice.actions;
+export const {
+  setSelectedCity,
+  sortByRatings,
+  sortByReviews,
+  toggleVegOnly,
+  clearError,
+} = restaurantSlice.actions;
 
 export default restaurantSlice.reducer;

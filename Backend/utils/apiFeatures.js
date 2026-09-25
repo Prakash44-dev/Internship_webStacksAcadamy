@@ -7,19 +7,36 @@ class APIFeatures {
   }
 
   search() {
-    //this.queryStr.keyword -> if keyword exists ie if we type
-    //localhost:4000/api/v1/products?keyword=AirPods
     const keyword = this.queryStr.keyword
       ? {
-          // search in name field
-          name: {
-            $regex: this.queryStr.keyword,
-            $options: "i",
-          },
+          $or: [
+            { name: { $regex: this.queryStr.keyword, $options: "i" } },
+            { address: { $regex: this.queryStr.keyword, $options: "i" } },
+            { city: { $regex: this.queryStr.keyword, $options: "i" } },
+          ],
         }
       : {};
 
     this.query = this.query.find({ ...keyword });
+    return this;
+  }
+
+  filterByCity() {
+    const rawCity = this.queryStr.city;
+    if (
+      rawCity &&
+      typeof rawCity === "string" &&
+      rawCity.trim() !== "" &&
+      rawCity.trim().toLowerCase() !== "all"
+    ) {
+      const trimmedCity = rawCity.trim();
+      this.query = this.query.find({
+        $or: [
+          { city: { $regex: new RegExp(`^${trimmedCity}$`, "i") } },
+          { address: { $regex: new RegExp(trimmedCity, "i") } },
+        ],
+      });
+    }
     return this;
   }
 

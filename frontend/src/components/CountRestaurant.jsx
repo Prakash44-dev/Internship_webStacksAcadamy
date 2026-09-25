@@ -11,11 +11,7 @@ const CountRestaurant = () => {
   const errorMessage =
     typeof error === "string" ? error : error?.message || "Something went wrong";
 
-  useEffect(() => {
-    if (count === 0 && !loading && !error) {
-      dispatch(getAllRestaurants());
-    }
-  }, [count, dispatch, error, loading]);
+
 
   return (
     <div>

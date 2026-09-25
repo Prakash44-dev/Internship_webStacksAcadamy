@@ -55,6 +55,18 @@ const userSchema = new mongoose.Schema(
     url: String,
   },
 
+  city: {
+    type: String,
+    default: "All",
+    trim: true,
+  },
+
+  address: {
+    type: String,
+    default: "",
+    trim: true,
+  },
+
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,

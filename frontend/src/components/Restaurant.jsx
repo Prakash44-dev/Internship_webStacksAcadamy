@@ -34,8 +34,17 @@ const Restaurant = ({
         </Link>
 
         <div className="card-body d-flex flex-column">
-          <h5 className="card-title">{restaurant.name}</h5>
-          <p className="rest_address">{restaurant.address}</p>
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <span className="badge badge-pill badge-light text-dark font-weight-bold" style={{ border: "1px solid #ddd", fontSize: "0.78rem", padding: "0.3rem 0.6rem" }}>
+              📍 {restaurant.city || "Bangalore"}
+            </span>
+            <span className={`badge badge-pill font-weight-bold ${restaurant.isVeg ? "badge-success" : "badge-secondary"}`} style={{ fontSize: "0.72rem", padding: "0.3rem 0.6rem" }}>
+              {restaurant.isVeg ? "🟢 Pure Veg" : "🔴 Non-Veg"}
+            </span>
+          </div>
+
+          <h5 className="card-title font-weight-bold mb-1">{restaurant.name}</h5>
+          <p className="rest_address text-muted mb-2" style={{ fontSize: "0.85rem", lineHeight: "1.3" }}>{restaurant.address}</p>
 
           <div className="ratings mt-auto">
             <div className="rating-outer">

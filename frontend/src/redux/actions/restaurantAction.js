@@ -3,10 +3,18 @@ import api from "../../Utils/api";
 
 export const getAllRestaurants = createAsyncThunk(
   "restaurant/getAllRestaurants",
-  async (keyword = "", { rejectWithValue }) => {
+  async (args = {}, { rejectWithValue }) => {
     try {
+      const params = typeof args === "string" ? { keyword: args } : { ...args };
+      if (!params.city || params.city.toLowerCase() === "all") {
+        delete params.city;
+      }
+      if (!params.keyword) {
+        delete params.keyword;
+      }
+
       const { data } = await api.get("/eats/stores", {
-        params: { keyword },
+        params,
       });
 
       return {

@@ -14,7 +14,7 @@ const normalizeEmail = (email = "") => email.trim().toLowerCase();
 // Register user
 exports.signup = catchAsyncErrors(async (req, res, next) => {
 
-  const { name, email, password, passwordConfirm, phoneNumber } = req.body;
+  const { name, email, password, passwordConfirm, phoneNumber, city, address } = req.body;
 
   let avatar = {};
 
@@ -53,6 +53,8 @@ exports.signup = catchAsyncErrors(async (req, res, next) => {
     password,
     passwordConfirm,
     phoneNumber,
+    city: city || "Bangalore",
+    address: address || "",
     avatar,
   });
 
@@ -186,6 +188,8 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
+    ...(req.body.city !== undefined && { city: req.body.city }),
+    ...(req.body.address !== undefined && { address: req.body.address }),
   };
 
   if (req.body.avatar && typeof req.body.avatar === "string" && req.body.avatar.trim() !== "" && !req.body.avatar.startsWith("/images/")) {

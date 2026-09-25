@@ -26,6 +26,8 @@ const UpdateProfile = () => {
   );
   const name = formData.name ?? user?.name ?? "";
   const email = formData.email ?? user?.email ?? "";
+  const city = formData.city ?? user?.city ?? "Bangalore";
+  const address = formData.address ?? user?.address ?? "";
   const avatarPreview = avatar || user?.avatar?.url || "/images/images.png";
 
   useEffect(() => {
@@ -54,6 +56,8 @@ const UpdateProfile = () => {
     const userData = {
       name,
       email,
+      city,
+      address,
     };
 
     if (avatar) {
@@ -122,6 +126,37 @@ const UpdateProfile = () => {
                 className="form-control"
                 name="email"
                 value={email}
+                onChange={onInputChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="city_field">Your City / Location</label>
+              <select
+                id="city_field"
+                className="form-control"
+                name="city"
+                value={city}
+                onChange={onInputChange}
+              >
+                <option value="Bangalore">Bangalore</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Pune">Pune</option>
+                <option value="Chennai">Chennai</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="address_field">Delivery Address / Locality</label>
+              <input
+                type="text"
+                id="address_field"
+                className="form-control"
+                name="address"
+                placeholder="e.g. Koramangala 5th Block, Indiranagar, etc."
+                value={address}
                 onChange={onInputChange}
               />
             </div>
